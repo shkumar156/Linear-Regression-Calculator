@@ -145,9 +145,7 @@ export function QuestionAnswers({ slope, intercept }: QuestionAnswersProps) {
                     <p className="text-sm text-gray-600 text-center">
                       For x = 85, the calculated result is <strong>{prediction.toFixed(2)}</strong>
                     </p>
-                    <p className="text-xs text-gray-500 text-center mt-2">
-                      If your manual calculation gives 78.05, please verify your slope and intercept values.
-                    </p>
+                    
                   </div>
                 )}
               </div>
