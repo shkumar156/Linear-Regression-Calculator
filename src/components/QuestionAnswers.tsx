@@ -138,16 +138,7 @@ export function QuestionAnswers({ slope, intercept }: QuestionAnswersProps) {
                   </p>
                 </div>
 
-                {/* Manual verification for x=85 */}
-                {inputValue === '85' && (
-                  <div className="bg-yellow-50 p-6 rounded-xl border-2 border-yellow-300">
-                    <h5 className="font-bold text-gray-700 mb-3 text-center">🔍 Verification Check:</h5>
-                    <p className="text-sm text-gray-600 text-center">
-                      For x = 85, the calculated result is <strong>{prediction.toFixed(2)}</strong>
-                    </p>
-                    
-                  </div>
-                )}
+                
               </div>
             </div>
           )}
