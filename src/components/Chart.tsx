@@ -70,170 +70,172 @@ export function Chart({ data, width = 800, height = 500 }: ChartProps) {
         📊 Scatter Plot with Linear Regression Line
       </h3>
       <div className="flex justify-center overflow-x-auto">
-        <svg 
-          className="border-2 border-gray-300 rounded-xl shadow-lg bg-gradient-to-br from-blue-50 to-purple-50 w-full max-w-full"
-          style={{ 
-            minWidth: '280px',
-            height: 'auto',
-            aspectRatio: `${chartDimensions.width} / ${chartDimensions.height}`
-          }}
-          viewBox={`0 0 ${chartDimensions.width} ${chartDimensions.height}`}
-          preserveAspectRatio="xMidYMid meet"
-        >
-          {/* Background grid */}
-          {xTicks.map(tick => (
+        <div className="w-full max-w-[650px] mx-auto">
+          <svg 
+            className="border-2 border-gray-300 rounded-xl shadow-lg bg-gradient-to-br from-blue-50 to-purple-50 w-full max-w-full"
+            style={{ 
+              minWidth: '280px',
+              height: 'auto',
+              aspectRatio: `${chartDimensions.width} / ${chartDimensions.height}`
+            }}
+            viewBox={`0 0 ${chartDimensions.width} ${chartDimensions.height}`}
+            preserveAspectRatio="xMidYMid meet"
+          >
+            {/* Background grid */}
+            {xTicks.map(tick => (
+              <line
+                key={`x-grid-${tick}`}
+                x1={margin.left + xScale(tick)}
+                y1={margin.top}
+                x2={margin.left + xScale(tick)}
+                y2={chartDimensions.height - margin.bottom}
+                stroke="#e5e7eb"
+                strokeWidth="1"
+                strokeDasharray="2,2"
+              />
+            ))}
+            {yTicks.map(tick => (
+              <line
+                key={`y-grid-${tick}`}
+                x1={margin.left}
+                y1={margin.top + yScale(tick)}
+                x2={chartDimensions.width - margin.right}
+                y2={margin.top + yScale(tick)}
+                stroke="#e5e7eb"
+                strokeWidth="1"
+                strokeDasharray="2,2"
+              />
+            ))}
+            
+            {/* Main axes */}
             <line
-              key={`x-grid-${tick}`}
-              x1={margin.left + xScale(tick)}
-              y1={margin.top}
-              x2={margin.left + xScale(tick)}
-              y2={chartDimensions.height - margin.bottom}
-              stroke="#e5e7eb"
-              strokeWidth="1"
-              strokeDasharray="2,2"
-            />
-          ))}
-          {yTicks.map(tick => (
-            <line
-              key={`y-grid-${tick}`}
               x1={margin.left}
-              y1={margin.top + yScale(tick)}
+              y1={chartDimensions.height - margin.bottom}
               x2={chartDimensions.width - margin.right}
-              y2={margin.top + yScale(tick)}
-              stroke="#e5e7eb"
-              strokeWidth="1"
-              strokeDasharray="2,2"
+              y2={chartDimensions.height - margin.bottom}
+              stroke="#1f2937"
+              strokeWidth="3"
             />
-          ))}
-          
-          {/* Main axes */}
-          <line
-            x1={margin.left}
-            y1={chartDimensions.height - margin.bottom}
-            x2={chartDimensions.width - margin.right}
-            y2={chartDimensions.height - margin.bottom}
-            stroke="#1f2937"
-            strokeWidth="3"
-          />
-          <line
-            x1={margin.left}
-            y1={margin.top}
-            x2={margin.left}
-            y2={chartDimensions.height - margin.bottom}
-            stroke="#1f2937"
-            strokeWidth="3"
-          />
-          
-          {/* Regression line */}
-          <line
-            x1={margin.left + xScale(data.regression[0].x)}
-            y1={margin.top + yScale(data.regression[0].y)}
-            x2={margin.left + xScale(data.regression[data.regression.length - 1].x)}
-            y2={margin.top + yScale(data.regression[data.regression.length - 1].y)}
-            stroke="#2563eb"
-            strokeWidth="4"
-            className="drop-shadow-lg"
-          />
-          
-          {/* Data points with values */}
-          {data.original.map((point, i) => {
-            const cx = margin.left + xScale(point.x);
-            const cy = margin.top + yScale(point.y);
-            return (
-              <g key={i}>
-                {/* Point circle */}
-                <circle
-                  cx={cx}
-                  cy={cy}
-                  r={pointRadius}
-                  fill="#dc2626"
-                  stroke="#ffffff"
-                  strokeWidth={pointRadius * 0.3}
-                  className="drop-shadow-lg hover:r-10 transition-all duration-200 cursor-pointer"
-                />
-                {/* Point label - show on both mobile and desktop with different sizes */}
-                <text
-                  x={cx}
-                  y={cy - pointRadius * 1.5}
-                  textAnchor="middle"
-                  fontSize={pointFontSize}
-                  fontWeight="bold"
-                  fill="#374151"
-                  style={{ 
-                    textShadow: '1px 1px 2px white, -1px -1px 2px white, 1px -1px 2px white, -1px 1px 2px white'
-                  }}
-                >
-                  {isMobile ? `${point.x},${point.y}` : `(${point.x}, ${point.y})`}
-                </text>
-              </g>
-            );
-          })}
-          
-          {/* X-axis labels */}
-          {xTicks.map(tick => (
+            <line
+              x1={margin.left}
+              y1={margin.top}
+              x2={margin.left}
+              y2={chartDimensions.height - margin.bottom}
+              stroke="#1f2937"
+              strokeWidth="3"
+            />
+            
+            {/* Regression line */}
+            <line
+              x1={margin.left + xScale(data.regression[0].x)}
+              y1={margin.top + yScale(data.regression[0].y)}
+              x2={margin.left + xScale(data.regression[data.regression.length - 1].x)}
+              y2={margin.top + yScale(data.regression[data.regression.length - 1].y)}
+              stroke="#2563eb"
+              strokeWidth="4"
+              className="drop-shadow-lg"
+            />
+            
+            {/* Data points with values */}
+            {data.original.map((point, i) => {
+              const cx = margin.left + xScale(point.x);
+              const cy = margin.top + yScale(point.y);
+              return (
+                <g key={i}>
+                  {/* Point circle */}
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={pointRadius}
+                    fill="#dc2626"
+                    stroke="#ffffff"
+                    strokeWidth={pointRadius * 0.3}
+                    className="drop-shadow-lg hover:r-10 transition-all duration-200 cursor-pointer"
+                  />
+                  {/* Point label - show on both mobile and desktop with different sizes */}
+                  <text
+                    x={cx}
+                    y={cy - pointRadius * 1.5}
+                    textAnchor="middle"
+                    fontSize={pointFontSize}
+                    fontWeight="bold"
+                    fill="#374151"
+                    style={{ 
+                      textShadow: '1px 1px 2px white, -1px -1px 2px white, 1px -1px 2px white, -1px 1px 2px white'
+                    }}
+                  >
+                    {isMobile ? `${point.x},${point.y}` : `(${point.x}, ${point.y})`}
+                  </text>
+                </g>
+              );
+            })}
+            
+            {/* X-axis labels */}
+            {xTicks.map(tick => (
+              <text
+                key={`x-label-${tick}`}
+                x={margin.left + xScale(tick)}
+                y={chartDimensions.height - margin.bottom + axisFontSize * 1.1}
+                textAnchor="middle"
+                fontSize={tickFontSize}
+                fontWeight="600"
+                fill="#374151"
+              >
+                {tick}
+              </text>
+            ))}
+            
+            {/* Y-axis labels */}
+            {yTicks.map(tick => (
+              <text
+                key={`y-label-${tick}`}
+                x={margin.left - axisFontSize * 0.8}
+                y={margin.top + yScale(tick) + tickFontSize * 0.35}
+                textAnchor="middle"
+                fontSize={tickFontSize}
+                fontWeight="600"
+                fill="#374151"
+              >
+                {tick}
+              </text>
+            ))}
+            
+            {/* Axis titles */}
             <text
-              key={`x-label-${tick}`}
-              x={margin.left + xScale(tick)}
-              y={chartDimensions.height - margin.bottom + axisFontSize * 1.1}
+              x={chartDimensions.width / 2}
+              y={chartDimensions.height - margin.bottom * 0.2}
               textAnchor="middle"
-              fontSize={tickFontSize}
-              fontWeight="600"
-              fill="#374151"
+              fontSize={axisFontSize}
+              fontWeight="bold"
+              fill="#1f2937"
             >
-              {tick}
+              {isMobile ? 'Midterm (x)' : 'Midterm Score (x)'}
             </text>
-          ))}
-          
-          {/* Y-axis labels */}
-          {yTicks.map(tick => (
             <text
-              key={`y-label-${tick}`}
-              x={margin.left - axisFontSize * 0.8}
-              y={margin.top + yScale(tick) + tickFontSize * 0.35}
+              x={margin.left - axisFontSize * 1.5}
+              y={margin.top + chartHeight / 2}
               textAnchor="middle"
-              fontSize={tickFontSize}
-              fontWeight="600"
-              fill="#374151"
+              transform={`rotate(-90 ${margin.left - axisFontSize * 1.5} ${margin.top + chartHeight / 2})`}
+              fontSize={axisFontSize}
+              fontWeight="bold"
+              fill="#1f2937"
             >
-              {tick}
+              {isMobile ? 'Final (y)' : 'Final Exam Score (y)'}
             </text>
-          ))}
-          
-          {/* Axis titles */}
-          <text
-            x={chartDimensions.width / 2}
-            y={chartDimensions.height - margin.bottom * 0.2}
-            textAnchor="middle"
-            fontSize={axisFontSize}
-            fontWeight="bold"
-            fill="#1f2937"
-          >
-            {isMobile ? 'Midterm (x)' : 'Midterm Score (x)'}
-          </text>
-          <text
-            x={margin.left - axisFontSize * 1.5}
-            y={margin.top + chartHeight / 2}
-            textAnchor="middle"
-            transform={`rotate(-90 ${margin.left - axisFontSize * 1.5} ${margin.top + chartHeight / 2})`}
-            fontSize={axisFontSize}
-            fontWeight="bold"
-            fill="#1f2937"
-          >
-            {isMobile ? 'Final (y)' : 'Final Exam Score (y)'}
-          </text>
-          
-          {/* Chart title */}
-          <text
-            x={chartDimensions.width / 2}
-            y={margin.top * 0.7}
-            textAnchor="middle"
-            fontSize={titleFontSize}
-            fontWeight="bold"
-            fill="#1f2937"
-          >
-            {isMobile ? 'Linear Regression' : 'Linear Regression Analysis'}
-          </text>
-        </svg>
+            
+            {/* Chart title */}
+            <text
+              x={chartDimensions.width / 2}
+              y={margin.top * 0.7}
+              textAnchor="middle"
+              fontSize={titleFontSize}
+              fontWeight="bold"
+              fill="#1f2937"
+            >
+              {isMobile ? 'Linear Regression' : 'Linear Regression Analysis'}
+            </text>
+          </svg>
+        </div>
       </div>
       
       {/* Enhanced Legend - responsive layout */}
