@@ -64,11 +64,14 @@ export function Chart({ data, width = 800, height = 500 }: ChartProps) {
       </h3>
       <div className="flex justify-center overflow-x-auto">
         <svg 
-          width={chartDimensions.width} 
-          height={chartDimensions.height} 
-          className="border-2 border-gray-300 rounded-xl shadow-lg bg-gradient-to-br from-blue-50 to-purple-50"
-          style={{ minWidth: '280px' }}
+          className="border-2 border-gray-300 rounded-xl shadow-lg bg-gradient-to-br from-blue-50 to-purple-50 w-full max-w-full"
+          style={{ 
+            minWidth: '280px',
+            height: 'auto',
+            aspectRatio: `${chartDimensions.width} / ${chartDimensions.height}`
+          }}
           viewBox={`0 0 ${chartDimensions.width} ${chartDimensions.height}`}
+          preserveAspectRatio="xMidYMid meet"
         >
           {/* Background grid */}
           {xTicks.map(tick => (
