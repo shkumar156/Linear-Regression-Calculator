@@ -57,6 +57,13 @@ export function Chart({ data, width = 800, height = 500 }: ChartProps) {
     Math.round(data.minY + (i * yRange) / (tickCount - 1))
   );
 
+  // Proportional font sizes and radii
+  const axisFontSize = chartWidth * 0.045; // axis labels
+  const tickFontSize = chartWidth * 0.035; // tick labels
+  const pointFontSize = chartWidth * 0.032; // data point labels
+  const titleFontSize = chartWidth * 0.05; // chart title
+  const pointRadius = chartWidth * 0.025; // data point radius
+
   return (
     <div className="bg-white p-2 sm:p-8 rounded-2xl shadow-xl border border-gray-100">
       <h3 className="text-base sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-6 text-center">
@@ -132,7 +139,6 @@ export function Chart({ data, width = 800, height = 500 }: ChartProps) {
           {data.original.map((point, i) => {
             const cx = margin.left + xScale(point.x);
             const cy = margin.top + yScale(point.y);
-            const pointRadius = isMobile ? 5 : 8;
             return (
               <g key={i}>
                 {/* Point circle */}
@@ -142,15 +148,17 @@ export function Chart({ data, width = 800, height = 500 }: ChartProps) {
                   r={pointRadius}
                   fill="#dc2626"
                   stroke="#ffffff"
-                  strokeWidth="2"
+                  strokeWidth={pointRadius * 0.3}
                   className="drop-shadow-lg hover:r-10 transition-all duration-200 cursor-pointer"
                 />
                 {/* Point label - show on both mobile and desktop with different sizes */}
                 <text
                   x={cx}
-                  y={cy - (isMobile ? 10 : 15)}
+                  y={cy - pointRadius * 1.5}
                   textAnchor="middle"
-                  className={`${isMobile ? 'text-[8px]' : 'text-xs'} font-bold fill-gray-700`}
+                  fontSize={pointFontSize}
+                  fontWeight="bold"
+                  fill="#374151"
                   style={{ 
                     textShadow: '1px 1px 2px white, -1px -1px 2px white, 1px -1px 2px white, -1px 1px 2px white'
                   }}
@@ -166,9 +174,11 @@ export function Chart({ data, width = 800, height = 500 }: ChartProps) {
             <text
               key={`x-label-${tick}`}
               x={margin.left + xScale(tick)}
-              y={chartDimensions.height - margin.bottom + (isMobile ? 20 : 25)}
+              y={chartDimensions.height - margin.bottom + axisFontSize * 1.1}
               textAnchor="middle"
-              className={`${isMobile ? 'text-[10px]' : 'text-sm'} font-semibold fill-gray-700`}
+              fontSize={tickFontSize}
+              fontWeight="600"
+              fill="#374151"
             >
               {tick}
             </text>
@@ -178,10 +188,12 @@ export function Chart({ data, width = 800, height = 500 }: ChartProps) {
           {yTicks.map(tick => (
             <text
               key={`y-label-${tick}`}
-              x={margin.left - (isMobile ? 20 : 25)}
-              y={margin.top + yScale(tick) + 5}
+              x={margin.left - axisFontSize * 0.8}
+              y={margin.top + yScale(tick) + tickFontSize * 0.35}
               textAnchor="middle"
-              className={`${isMobile ? 'text-[10px]' : 'text-sm'} font-semibold fill-gray-700`}
+              fontSize={tickFontSize}
+              fontWeight="600"
+              fill="#374151"
             >
               {tick}
             </text>
@@ -190,18 +202,22 @@ export function Chart({ data, width = 800, height = 500 }: ChartProps) {
           {/* Axis titles */}
           <text
             x={chartDimensions.width / 2}
-            y={chartDimensions.height - (isMobile ? 15 : 20)}
+            y={chartDimensions.height - margin.bottom * 0.2}
             textAnchor="middle"
-            className={`${isMobile ? 'text-xs' : 'text-lg'} font-bold fill-gray-800`}
+            fontSize={axisFontSize}
+            fontWeight="bold"
+            fill="#1f2937"
           >
             {isMobile ? 'Midterm (x)' : 'Midterm Score (x)'}
           </text>
           <text
-            x={isMobile ? 25 : 30}
-            y={chartDimensions.height / 2}
+            x={margin.left - axisFontSize * 1.5}
+            y={margin.top + chartHeight / 2}
             textAnchor="middle"
-            transform={`rotate(-90 ${isMobile ? 25 : 30} ${chartDimensions.height / 2})`}
-            className={`${isMobile ? 'text-xs' : 'text-lg'} font-bold fill-gray-800`}
+            transform={`rotate(-90 ${margin.left - axisFontSize * 1.5} ${margin.top + chartHeight / 2})`}
+            fontSize={axisFontSize}
+            fontWeight="bold"
+            fill="#1f2937"
           >
             {isMobile ? 'Final (y)' : 'Final Exam Score (y)'}
           </text>
@@ -209,9 +225,11 @@ export function Chart({ data, width = 800, height = 500 }: ChartProps) {
           {/* Chart title */}
           <text
             x={chartDimensions.width / 2}
-            y={isMobile ? 18 : 25}
+            y={margin.top * 0.7}
             textAnchor="middle"
-            className={`${isMobile ? 'text-xs' : 'text-lg'} font-bold fill-gray-800`}
+            fontSize={titleFontSize}
+            fontWeight="bold"
+            fill="#1f2937"
           >
             {isMobile ? 'Linear Regression' : 'Linear Regression Analysis'}
           </text>
